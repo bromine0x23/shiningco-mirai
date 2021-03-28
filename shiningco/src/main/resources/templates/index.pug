@@ -1,0 +1,103 @@
+html
+	head
+		meta(charset='UTF-8')
+		meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+		title 控制台 | #{bot.nick}
+		link(rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css')
+		link(rel='stylesheet' href='/webjars/bootstrap-select/css/bootstrap-select.css')
+		script(src='/webjars/jquery/jquery.min.js')
+		script(src='/webjars/bootstrap/js/bootstrap.bundle.js')
+		script(src='/webjars/bootstrap-select/js/bootstrap-select.js')
+		script(src='/webjars/bootstrap-select/js/i18n/defaults-zh_CN.js')
+		script(src='https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest')
+		script(src='https://cdn.jsdelivr.net/npm/@editorjs/image@latest')
+	body
+		.container-fluid
+			form
+				.form-group
+					label(for='target') 发送至
+					select#target.form-control.selectpicker
+						optgroup#target-groups(label='群聊')
+						optgroup#target-friends(label='好友')
+				.form-group
+					label(for='message') 消息
+					#message
+				button.btn.btn-primary(type='button' onclick='Console.send()') 发送
+		footer.text-muted.text-center
+			small Powered by #[a(href='https://github.com/mamoe/mirai') mirai]
+		script.
+			let Console = (function () {
+				"use strict";
+				let getBase64 = function(file, onLoadCallback) {
+					return new Promise(function(resolve, reject) {
+						var reader = new FileReader();
+						reader.onload = () => { return resolve(reader.result); };
+						reader.onerror = reject;
+						reader.readAsDataURL(file);
+					});
+				};
+				let editor = new EditorJS({
+					holder: 'message',
+					tools: {
+						image: {
+							class: ImageTool,
+							config: {
+								uploader: {
+									uploadByFile(file) {
+										return getBase64(file, function(e) {}).then((data) => {
+											return {
+												success: 1,
+												file: {
+													url: data
+												}
+											}
+										})
+									}
+								}
+							}
+						}
+					}
+				});
+				return {
+					loadOptions: function() {
+						$.getJSON('/app/groups').done((groups) => {
+							let options = $('#target-groups');
+							options.empty();
+							$.each(groups, (index, group) => {
+								let content = '<img class="rounded" src="' + group.avatarUrl + '" width="32" height="32"> ' + group.name + ' <small class="text-muted"> ' + group.id + '</small>';
+								let option = $('<option></option>')
+									.attr('value', 'group:' + group.id)
+									.text(group.name)
+									.attr('data-content', content);
+								options.append(option);
+							});
+							$('#target').selectpicker('refresh');
+						});
+						$.getJSON('/app/friends').done((friends) => {
+							let options = $('#target-friends');
+							options.empty();
+							$.each(friends, (index, friend) => {
+								let content = '<img class="rounded" src="' + friend.avatarUrl + '" width="32" height="32"> ' + friend.remark + ' <small class="text-muted"> ' + friend.id + '</small>';
+								let option = $('<option></option>')
+									.attr('value', 'friend:' + friend.id)
+									.text(friend.remark)
+									.attr('data-content', content);
+								options.append(option);
+							});
+							$('#target').selectpicker('refresh');
+						});
+					},
+					send: function() {
+						editor.save().then((messages) => {
+							let target = $('#target').val();
+							$.ajax({
+								type: 'POST',
+								url: '/app/messages',
+								contentType: 'application/json',
+								data: JSON.stringify({target: target, messages: messages.blocks})
+							});
+						});
+					}
+				};
+			})();
+			$(Console.loadOptions);

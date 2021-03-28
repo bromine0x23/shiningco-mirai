@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>xyz.bromine0x23.shiningco</groupId>
+		<artifactId>shiningco-build</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>shiningco-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>ShiningCo :: Parent</name>
+
+	<properties>
+		<java.version>11</java.version>
+
+		<mirai-core.version>2.5.0</mirai-core.version>
+		<mirai-login-solver-selenium.version>1.0-dev-16</mirai-login-solver-selenium.version>
+
+		<bouncycastle.version>1.68</bouncycastle.version>
+		<guava.version>30.1.1-jre</guava.version>
+		<jade4j-spring-boot-starter.version>2.0.4.RELEASE</jade4j-spring-boot-starter.version>
+		<jsoup.version>1.13.1</jsoup.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>xyz.bromine0x23.shiningco</groupId>
+				<artifactId>shiningco-plugin-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>xyz.bromine0x23.shiningco</groupId>
+				<artifactId>shiningco-runtime</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+				<artifactId>shiningco-plugins-bundle</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/net.mamoe/mirai-core-jvm -->
+			<dependency>
+				<groupId>net.mamoe</groupId>
+				<artifactId>mirai-core-jvm</artifactId>
+				<version>${mirai-core.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/net.mamoe/mirai-login-solver-selenium -->
+			<dependency>
+				<groupId>net.mamoe</groupId>
+				<artifactId>mirai-login-solver-selenium</artifactId>
+				<version>${mirai-login-solver-selenium.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.domingosuarez.boot/jade4j-spring-boot-starter -->
+			<dependency>
+				<groupId>com.domingosuarez.boot</groupId>
+				<artifactId>jade4j-spring-boot-starter</artifactId>
+				<version>${jade4j-spring-boot-starter.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk15on</artifactId>
+				<version>${bouncycastle.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcpkix-jdk15on</artifactId>
+				<version>${bouncycastle.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+			<dependency>
+				<groupId>org.jsoup</groupId>
+				<artifactId>jsoup</artifactId>
+				<version>${jsoup.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>jcenter</id>
+			<url>https://jcenter.bintray.com/</url>
+		</repository>
+	</repositories>
+
+</project>

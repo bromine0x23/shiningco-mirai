@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>xyz.bromine0x23.shiningco</groupId>
+		<artifactId>shiningco-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../shiningco-parent/pom.xml</relativePath>
+	</parent>
+
+	<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+	<artifactId>shiningco-plugins</artifactId>
+	<packaging>pom</packaging>
+	<name>ShiningCo :: Plugins</name>
+
+	<modules>
+		<module>shiningco-plugin-cat</module>
+		<module>shiningco-plugin-compiler</module>
+		<module>shiningco-plugin-eve</module>
+		<module>shiningco-plugin-ff14</module>
+		<module>shiningco-plugin-fortune</module>
+		<module>shiningco-plugin-github</module>
+		<module>shiningco-plugins-bundle</module>
+		<module>shiningco-plugin-pixiv</module>
+		<module>shiningco-plugin-evaluator</module>
+		<module>shiningco-plugin-netease</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco</groupId>
+			<artifactId>shiningco-plugin-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco</groupId>
+			<artifactId>shiningco-runtime</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

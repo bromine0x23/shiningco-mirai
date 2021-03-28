@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+		<artifactId>shiningco-plugins</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>shiningco-plugins-bundle</artifactId>
+	<packaging>jar</packaging>
+	<name>ShiningCo :: Plugins :: Bundle</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-cat</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-compiler</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-evaluator</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-eve</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-ff14</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-fortune</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-github</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-netease</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-pixiv</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+</project>

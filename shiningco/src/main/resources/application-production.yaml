@@ -1,0 +1,18 @@
+logging:
+  level:
+    root: warn
+    xyz.bromine0x23.shiningco: info
+
+# 账号配置
+bot:
+  account: 10000
+  password-md5: ffffffffffffffffffffffffffffffff
+  # password: password
+
+
+shiningco:
+  plugins:
+    pixiv:
+      refresh-token: <refresh-token>
+      proxy:
+        type: direct

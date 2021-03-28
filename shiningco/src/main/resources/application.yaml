@@ -1,0 +1,13 @@
+spring:
+  main:
+    web-application-type: servlet
+  profiles:
+    active:
+    - development
+    #- production
+
+shiningco:
+  plugins:
+    pixiv:
+      api-key: MOBrBDS8blbauoSck0ZfDbtuzpyT
+      api-secret: lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj
