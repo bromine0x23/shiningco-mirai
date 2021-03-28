@@ -1,0 +1,3 @@
+= ShiningCo-Mirai
+
+晒晒子 on link:https://github.com/mamoe/mirai[Mirai]
