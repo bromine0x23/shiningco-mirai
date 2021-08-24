@@ -23,7 +23,7 @@
 		<bouncycastle.version>1.68</bouncycastle.version>
 		<guava.version>30.1.1-jre</guava.version>
 		<jade4j-spring-boot-starter.version>2.0.4.RELEASE</jade4j-spring-boot-starter.version>
-		<jsoup.version>1.13.1</jsoup.version>
+		<jsoup.version>1.14.2</jsoup.version>
 	</properties>
 
 	<dependencyManagement>
