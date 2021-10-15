@@ -1,0 +1,5 @@
+p, /user/396893752, jav, allow
+p, /group/292905009, jav, allow
+p, /group/584040887, jav, allow
+p, /*, jav, deny
+p, /*, .*, allow

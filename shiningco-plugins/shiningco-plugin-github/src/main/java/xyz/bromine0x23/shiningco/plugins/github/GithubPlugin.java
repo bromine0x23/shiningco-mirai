@@ -3,9 +3,12 @@ package xyz.bromine0x23.shiningco.plugins.github;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
+import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 import org.apache.commons.math3.distribution.ZipfDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.Well19937c;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.kohsuke.github.GHRepository;
 import xyz.bromine0x23.shiningco.plugins.Plugin;
 import xyz.bromine0x23.shiningco.plugins.PluginCommand;
@@ -25,6 +28,7 @@ public class GithubPlugin {
 		this.githubService = githubService;
 	}
 
+	@PluginCommand(pattern = "\\A[\\\\/]github\\s+(?<keyword>..+)", callRequired = false)
 	@PluginCommand(pattern = "来点(?<keyword>.+)(?<!写的|喜欢的)项目", callRequired = false)
 	public MessageChainBuilder randomProjectByKeyword(MessageEvent event, Matcher matcher, MessageChainBuilder reply) {
 		try {
@@ -38,7 +42,7 @@ public class GithubPlugin {
 				reply.add("\n");
 				reply.add(repository.getHtmlUrl().toString());
 				reply.add("\n");
-				reply.add(repository.getDescription());
+				reply.add(truncate(repository.getDescription()));
 			} else {
 				reply.add("没有找到" + keyword + "项目");
 			}
@@ -63,7 +67,7 @@ public class GithubPlugin {
 				reply.add("\n");
 				reply.add(repository.getHtmlUrl().toString());
 				reply.add("\n");
-				reply.add(repository.getDescription());
+				reply.add(truncate(repository.getDescription()));
 			} else {
 				reply.add("没有找到" + user + "写的项目");
 			}
@@ -85,7 +89,7 @@ public class GithubPlugin {
 				reply.add("\n");
 				reply.add(repository.getHtmlUrl().toString());
 				reply.add("\n");
-				reply.add(repository.getDescription());
+				reply.add(truncate(repository.getDescription()));
 			} else {
 				reply.add("没有找到" + user + "喜欢的项目");
 			}
@@ -98,9 +102,21 @@ public class GithubPlugin {
 
 	private GHRepository randomOne(List<GHRepository> repositories) {
 		if (!repositories.isEmpty()) {
-			var distribution = new ZipfDistribution(randomGenerator, repositories.size(), 1.5);
+			var distribution = new ZipfDistribution(randomGenerator, repositories.size(), 0.5);
+			// var distribution = new UniformIntegerDistribution(1, repositories.size());
 			return repositories.get(distribution.sample() - 1);
 		}
 		return null;
+	}
+
+	@NotNull
+	private String truncate(@Nullable String text) {
+		if (text == null) {
+			return "";
+		}
+		if (text.length() > 500) {
+			text = text.substring(0, 490) + " [截断]";
+		}
+		return text;
 	}
 }

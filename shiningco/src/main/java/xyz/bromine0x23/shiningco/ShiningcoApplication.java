@@ -2,15 +2,17 @@ package xyz.bromine0x23.shiningco;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.retry.annotation.EnableRetry;
+import xyz.bromine0x23.shiningco.runtime.ProxyProperties;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 @SpringBootApplication
 @EnableRetry
+@EnableConfigurationProperties(ProxyProperties.class)
 public class ShiningcoApplication {
-
 
 	public static final String PROXY_HOST = "127.0.0.1";
 	public static final int    PROXY_PORT = 1080;

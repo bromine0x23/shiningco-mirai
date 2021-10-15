@@ -9,22 +9,10 @@ import java.net.Proxy;
 @Data
 public class PixivPluginProperties {
 
-	private ProxyProperties proxy = new ProxyProperties();
-
 	private String apiKey;
 
 	private String apiSecret;
 
 	private String refreshToken;
 
-	@Data
-	public static class ProxyProperties {
-
-		private Proxy.Type type = Proxy.Type.DIRECT;
-
-		private String host;
-
-		private int port;
-
-	}
 }

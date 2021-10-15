@@ -2,11 +2,13 @@ package xyz.bromine0x23.shiningco.plugins.pixiv;
 
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.message.data.ForwardMessageBuilder;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
+import net.mamoe.mirai.message.data.PlainText;
 import net.mamoe.mirai.utils.ExternalResource;
 import org.apache.commons.math3.distribution.ZipfDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
-import org.apache.commons.math3.random.Well19937c;
+import org.apache.commons.math3.random.Well512a;
 import org.jsoup.Jsoup;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.client.RestClientException;
@@ -27,21 +29,22 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties(PixivPluginProperties.class)
 public class PixivPlugin {
 
-	private final PixivService pixivService;
+	private final RandomGenerator randomGenerator = new Well512a(System.currentTimeMillis());
 
-	private final RandomGenerator randomGenerator = new Well19937c(System.currentTimeMillis());
+	private final PixivService pixivService;
 
 	public PixivPlugin(PixivService pixivService) {
 		this.pixivService = pixivService;
 	}
 
+	@PluginCommand(pattern = "\\A[\\\\/]pixiv(?:\\.keyword)?\\s+(?<keyword>..+)", callRequired = false)
 	@PluginCommand(pattern = "来点(?<keyword>.+?)(?<!画的)图", callRequired = false)
 	public MessageChainBuilder searchByKeyword(MessageEvent event, Matcher matcher, MessageChainBuilder reply) {
 		try {
-			var keyword = matcher.group("keyword");
+			var keyword       = matcher.group("keyword");
 			var illustrations = pixivService.searchRandomOneByKeyword(keyword, false);
 			if (!illustrations.isEmpty()) {
-					replyForFound(event, illustrations, reply);
+				replyForFound(event, illustrations, reply);
 			} else {
 				reply.add("没有找到" + keyword + "图");
 			}
@@ -54,10 +57,11 @@ public class PixivPlugin {
 		return reply;
 	}
 
+	@PluginCommand(pattern = "\\A[\\\\/]pixiv\\.artist\\s+(?<artist>.+)", callRequired = false)
 	@PluginCommand(pattern = "来点(?<artist>.+?)画的图", callRequired = false)
 	public MessageChainBuilder searchByArtist(MessageEvent event, Matcher matcher, MessageChainBuilder reply) {
 		try {
-			var artist = matcher.group("artist");
+			var artist        = matcher.group("artist");
 			var illustrations = pixivService.searchRandomOneByArtist(artist, false);
 			if (!illustrations.isEmpty()) {
 				replyForFound(event, illustrations, reply);
@@ -82,29 +86,30 @@ public class PixivPlugin {
 			imageUrls.add(metaPage.getImageUrls().getOriginal());
 		}
 
-		var images = imageUrls.stream().filter(Objects::nonNull).limit(4).map(pixivService::download).collect(Collectors.toList());
+		var images = imageUrls.stream().filter(Objects::nonNull).limit(10).map(pixivService::download).toList();
 
-		reply.add("https://www.pixiv.net/artworks/" + illustration.getId());
-		reply.add("\n");
-		reply.add("作者：" + illustration.getUser().getName());
-		reply.add("\n");
-		reply.add("标题：" + illustration.getTitle());
-		reply.add("\n");
-		reply.add("上传时间：" + illustration.getCreateDate().toLocalDateTime());
-		reply.add("\n");
-		reply.add("说明：" + truncate(illustration.getCaption()));
-		reply.add("\n");
-		reply.add("标签：" + illustration.getTags().stream().map(Tag::getBestName).collect(Collectors.joining(" ")));
+		var forwardMessageBuilder = new ForwardMessageBuilder(event.getSender());
 
+		forwardMessageBuilder.add(event.getSender(), event.getMessage(), event.getTime());
+		forwardMessageBuilder.add(event.getBot(), new PlainText("标题：" + illustration.getTitle()));
+		forwardMessageBuilder.add(event.getBot(), new PlainText("地址：https://www.pixiv.net/artworks/" + illustration.getId()));
+		forwardMessageBuilder.add(event.getBot(), new PlainText("作者：" + illustration.getUser().getName()));
+		forwardMessageBuilder.add(event.getBot(), new PlainText("说明：" + truncate(illustration.getCaption())));
+		forwardMessageBuilder.add(event.getBot(), new PlainText("标签：" + illustration.getTags().stream().map(Tag::getBestName).limit(20).collect(Collectors.joining(" "))));
+		forwardMessageBuilder.add(event.getBot(), new PlainText("上传时间：" + illustration.getCreateDate().toLocalDateTime()));
 		for (var image : images) {
 			try (var resource = ExternalResource.create(image)) {
-				reply.add(event.getSubject().uploadImage(resource));
+				forwardMessageBuilder.add(event.getBot(), event.getSubject().uploadImage(resource));
+				// reply.add(event.getSubject().uploadImage(resource));
 			}
 		}
+
+		reply.add(forwardMessageBuilder.build());
 	}
 
 	private Illustration randomOne(List<Illustration> illustrations) {
-		var distribution = new ZipfDistribution(randomGenerator, illustrations.size(), 0.8);
+		var distribution = new ZipfDistribution(randomGenerator, illustrations.size(), 0.5);
+		// var distribution = new UniformIntegerDistribution(1, illustrations.size());
 		return illustrations.get(distribution.sample() - 1);
 	}
 

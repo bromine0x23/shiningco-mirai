@@ -27,6 +27,11 @@
 		<module>shiningco-plugin-pixiv</module>
 		<module>shiningco-plugin-evaluator</module>
 		<module>shiningco-plugin-netease</module>
+		<module>shiningco-plugin-weather</module>
+		<module>shiningco-plugin-jav</module>
+		<module>shiningco-plugin-bangumi</module>
+		<module>shiningco-plugin-waifu</module>
+		<module>shiningco-plugin-live</module>
 	</modules>
 
 	<dependencies>

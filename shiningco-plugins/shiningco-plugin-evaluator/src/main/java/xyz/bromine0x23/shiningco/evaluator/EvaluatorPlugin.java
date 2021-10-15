@@ -17,14 +17,14 @@ public class EvaluatorPlugin {
 	private final IntegerEvaluator integerEvaluator = new IntegerEvaluator();
 	private final ComplexEvaluator complexEvaluator = new ComplexEvaluator();
 
-	@PluginCommand(pattern = "\\A/eval\\s+(?<expression>.+)\\Z", patternFlags = Pattern.CASE_INSENSITIVE, callRequired = false)
+	@PluginCommand(pattern = "\\A[\\\\/]eval\\s+(?<expression>.+)\\Z", patternFlags = Pattern.CASE_INSENSITIVE, callRequired = false)
 	public MessageChainBuilder evaluate(Matcher matcher, MessageChainBuilder reply) {
 		return eval(evaluator, matcher, reply, result -> {
-			reply.add(String.format("%.8G", result));
+			reply.add(String.format("%.15G", result));
 		});
 	}
 
-	@PluginCommand(pattern = "\\A/eval\\.i\\s+(?<expression>.+)\\Z", patternFlags = Pattern.CASE_INSENSITIVE, callRequired = false)
+	@PluginCommand(pattern = "\\A[\\\\/]eval\\.i\\s+(?<expression>.+)\\Z", patternFlags = Pattern.CASE_INSENSITIVE, callRequired = false)
 	public MessageChainBuilder integerEvaluate(Matcher matcher, MessageChainBuilder reply) {
 		return eval(integerEvaluator, matcher, reply, result -> {
 			reply.add("DEC: " + result.toString(10));
@@ -33,24 +33,24 @@ public class EvaluatorPlugin {
 		});
 	}
 
-	@PluginCommand(pattern = "\\A/eval\\.c\\s+(?<expression>.+)\\Z", patternFlags = Pattern.CASE_INSENSITIVE, callRequired = false)
+	@PluginCommand(pattern = "\\A[\\\\/]eval\\.c\\s+(?<expression>.+)\\Z", patternFlags = Pattern.CASE_INSENSITIVE, callRequired = false)
 	public MessageChainBuilder complexEvaluate(Matcher matcher, MessageChainBuilder reply) {
 		return eval(complexEvaluator, matcher, reply, result -> {
 			if (result.getReal() != 0) {
 				if (result.getImaginary() != 0) {
 					reply.add(
 						String.format(
-							result.getImaginary() < 0 ? "%.8G - %.8Gi" : "%.8G + %.8Gi",
+							result.getImaginary() < 0 ? "%.15G - %.15Gi" : "%.15G + %15Gi",
 							result.getReal(),
 							FastMath.abs(result.getImaginary())
 						)
 					);
 				} else {
-					reply.add(String.format("%.8G", result.getReal()));
+					reply.add(String.format("%.15G", result.getReal()));
 				}
 			} else {
 				if (result.getImaginary() != 0) {
-					reply.add(String.format("%.8G", result.getImaginary()));
+					reply.add(String.format("%.15G", result.getImaginary()));
 					reply.add("i");
 				} else {
 					reply.add("0");

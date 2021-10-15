@@ -7,9 +7,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import xyz.bromine0x23.shiningco.plugins.pixiv.representations.Illustration;
+import xyz.bromine0x23.shiningco.runtime.WorkTimeService;
 
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -20,13 +20,16 @@ public class PixivService {
 
 	private final PixivApiService apiService;
 
+	private final WorkTimeService workTimeService;
+
 	private final LoadingCache<String, byte[]> imageCache;
 
 	public PixivService(
-		PixivApiService apiService
-	) {
-		this.apiService = apiService;
-		this.imageCache = CacheBuilder.newBuilder()
+		PixivApiService apiService,
+		WorkTimeService workTimeService) {
+		this.apiService      = apiService;
+		this.workTimeService = workTimeService;
+		this.imageCache      = CacheBuilder.newBuilder()
 			.expireAfterAccess(Duration.ofMinutes(5))
 			.build(CacheLoader.from(apiService::download));
 	}
@@ -47,10 +50,7 @@ public class PixivService {
 	private List<Illustration> select(List<Illustration> illustrations, boolean restricted) {
 		return illustrations.stream()
 			.filter(illustration -> illustration.getTags().stream().noneMatch(tag -> Objects.equals("R-18G", tag.getName())))
-			.filter(illustration -> {
-				var time = LocalTime.now();
-				return (time.getHour() < 8 || 20 <= time.getHour()) || restricted == (illustration.getSanityLevel() > 5);
-			})
+			.filter(illustration -> !workTimeService.duringWorkTime() || restricted == (illustration.getSanityLevel() > 5))
 			.collect(Collectors.toList());
 	}
 

@@ -11,6 +11,7 @@ import com.github.scribejava.core.oauth2.clientauthentication.RequestBodyAuthent
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import xyz.bromine0x23.shiningco.runtime.ProxyProperties;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -22,11 +23,12 @@ public class PixivOAuthService {
 	private final OAuth20Service oauthService;
 
 	public PixivOAuthService(
-		PixivPluginProperties properties
+		PixivPluginProperties properties,
+		ProxyProperties proxyProperties
 	) {
 		this.oauthService = new ServiceBuilder(properties.getApiKey())
 			.apiSecret(properties.getApiSecret())
-			.httpClient(new JDKHttpClient(new JDKHttpClientConfig().withProxy(getProxy(properties.getProxy()))))
+			.httpClient(new JDKHttpClient(new JDKHttpClientConfig().withProxy(getProxy(proxyProperties))))
 			.userAgent("PixivAndroidApp/5.0.115 (Android 9.0; ShiningCo)")
 			.build(new PixivOAuthApi());
 	}
@@ -62,7 +64,7 @@ public class PixivOAuthService {
 
 	}
 
-	private static Proxy getProxy(PixivPluginProperties.ProxyProperties proxyProperties) {
+	private static Proxy getProxy(ProxyProperties proxyProperties) {
 		if (proxyProperties.getType() != Proxy.Type.DIRECT) {
 			return new Proxy(proxyProperties.getType(), new InetSocketAddress(proxyProperties.getHost(), proxyProperties.getPort()));
 		}

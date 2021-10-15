@@ -19,6 +19,7 @@ import xyz.bromine0x23.shiningco.plugins.pixiv.representations.Illustration;
 import xyz.bromine0x23.shiningco.plugins.pixiv.representations.SearchIllustResult;
 import xyz.bromine0x23.shiningco.plugins.pixiv.representations.SearchUserResult;
 import xyz.bromine0x23.shiningco.plugins.pixiv.representations.UserPreview;
+import xyz.bromine0x23.shiningco.runtime.ProxyProperties;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -43,12 +44,13 @@ public class PixivApiService {
 
 	public PixivApiService(
 		PixivPluginProperties properties,
+		ProxyProperties proxyProperties,
 		PixivOAuthService oauthService,
 		RestTemplateBuilder restTemplateBuilder
 	) {
 		this.properties       = properties;
 		this.restTemplate     = restTemplateBuilder
-			.requestFactory(() -> createClientHttpRequestFactory(properties.getProxy()))
+			.requestFactory(() -> createClientHttpRequestFactory(proxyProperties))
 			.build();
 		this.accessTokenCache = CacheBuilder.newBuilder()
 			.expireAfterWrite(Duration.ofSeconds(3600L))
@@ -111,7 +113,7 @@ public class PixivApiService {
 		return httpHeaders;
 	}
 
-	private static ClientHttpRequestFactory createClientHttpRequestFactory(PixivPluginProperties.ProxyProperties proxyProperties) {
+	private static ClientHttpRequestFactory createClientHttpRequestFactory(ProxyProperties proxyProperties) {
 		var factory = new SimpleClientHttpRequestFactory();
 		if (proxyProperties.getType() != Proxy.Type.DIRECT) {
 			factory.setProxy(new Proxy(proxyProperties.getType(), new InetSocketAddress(proxyProperties.getHost(), proxyProperties.getPort())));

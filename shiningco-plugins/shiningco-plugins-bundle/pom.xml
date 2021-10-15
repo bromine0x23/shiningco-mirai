@@ -17,6 +17,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-bangumi</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
 			<artifactId>shiningco-plugin-cat</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -52,12 +57,32 @@
 		</dependency>
 		<dependency>
 			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-live</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-jav</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
 			<artifactId>shiningco-plugin-netease</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
 			<artifactId>shiningco-plugin-pixiv</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-waifu</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xyz.bromine0x23.shiningco.plugins</groupId>
+			<artifactId>shiningco-plugin-weather</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

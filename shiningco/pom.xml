@@ -55,6 +55,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.casbin</groupId>
+			<artifactId>casbin-spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.domingosuarez.boot</groupId>
 			<artifactId>jade4j-spring-boot-starter</artifactId>
 		</dependency>
