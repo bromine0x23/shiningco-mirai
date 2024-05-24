@@ -20,7 +20,7 @@
 		<mirai-core.version>2.7.1</mirai-core.version>
 		<mirai-login-solver-selenium.version>1.0-dev-17</mirai-login-solver-selenium.version>
 
-		<bouncycastle.version>1.69</bouncycastle.version>
+		<bouncycastle.version>1.70</bouncycastle.version>
 		<commons-math3.version>3.6.1</commons-math3.version>
 		<guava.version>32.0.0-jre</guava.version>
 		<jade4j-spring-boot-starter.version>2.0.4.RELEASE</jade4j-spring-boot-starter.version>
